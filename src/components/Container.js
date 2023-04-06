@@ -12,9 +12,9 @@ const Container = ({ startDate, endDate }) => {
   const sDate = getDate(startDate);
   const eDate = getDate(endDate);
   const [data, setData] = useState([]);
+  const [allApps, setAllApps] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  //     http://go-dev.greedygame.com/v3/dummy/report?startDate=2021-07-01&endDate=2021-07-31
   const fetchData = () => {
     fetch(
       "http://go-dev.greedygame.com/v3/dummy/report?startDate=" +
@@ -28,11 +28,35 @@ const Container = ({ startDate, endDate }) => {
         setData(data.data);
       });
   };
+  const fetchApps = async () => {
+    const response = await fetch("http://go-dev.greedygame.com/v3/dummy/apps");
+    const apps = await response.json();
+    setAllApps(apps);
+  };
+  //   const fetchApps = () => {
+  //     fetch("http://go-dev.greedygame.com/v3/dummy/apps")
+  //       .then((response) => response.json())
+  //       .then((apps) => {
+  //         setLoading(false);
+  //         setAllApps(apps);
+  //       });
+  //   };
   useEffect(() => {
     fetchData();
+    fetchApps();
   }, []);
+  console.log(allApps);
 
-  console.log(data[0]);
+  const getApps = () => {
+    fetchApps();
+    let dictionary = allApps
+      ? Object.fromEntries(
+          allApps.data.map((item) => [item.app_id, item.app_name])
+        )
+      : {};
+    console.log(dictionary);
+  };
+
   return (
     <div>
       {loading ? (
@@ -41,12 +65,12 @@ const Container = ({ startDate, endDate }) => {
         <table className="bg-red-200 w-full">
           <thead>
             <tr>
-              <th className="text-left">
+              <th className="text-left max-w-fit">
                 <FilterAltIcon />
               </th>
             </tr>
             <tr className="text-left">
-              <th>Date</th>
+              <th className="">Date</th>
               <th>App</th>
               <th>Requests</th>
               <th>Responses</th>
@@ -87,7 +111,7 @@ const Container = ({ startDate, endDate }) => {
               const fillRate = (item.requests / item.responses) * 100;
               const ctr = (item.clicks / item.impressions) * 100;
               return (
-                <tr key={index}>
+                <tr key={index} className="text-left">
                   <td>{date}</td>
                   <td>{item.app_id}</td>
                   <td>{item.requests}</td>
