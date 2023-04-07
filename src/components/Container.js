@@ -12,6 +12,9 @@ const Container = () => {
 
   const columns = useSelector((state) => state.columns.columns);
 
+  var activeColumns = [];
+  columns.forEach((item) => item.visibility && activeColumns.push(item.title));
+
   const dispatch = useDispatch();
 
   const getDate = (date) => {
@@ -30,16 +33,17 @@ const Container = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = () => {
-    fetch(URL)
-      .then((response) => response.json())
-      .then((data) => {
-        setLoading(false);
-        setData(data.data);
-      });
-  };
   useEffect(() => {
-    fetchData();
+    try {
+      fetch(URL)
+        .then((response) => response.json())
+        .then((data) => {
+          setLoading(false);
+          setData(data.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }, [startDate, endDate]);
 
   useEffect(() => {
@@ -47,28 +51,45 @@ const Container = () => {
   }, []);
 
   return (
-    <div className="" style={{ minHeight: window.innerHeight }}>
-      {loading ? (
-        <h1>Loading...</h1>
-      ) : (
-        <table className="bg-red-200 w-full">
-          <thead>
-            <tr>
-              <th className="text-left max-w-fit">
-                <FilterAltIcon />
-              </th>
-            </tr>
-            <tr className="text-left">
-              {columns.map((item) => {
-                if (item.visibility) return <th key={item.id}>{item.title}</th>;
-                else return "";
-              })}
-            </tr>
-          </thead>
+    <div className="p-4 mt-4" style={{ minHeight: window.innerHeight }}>
+      <table className="w-full" style={{ lineHeight: 2 }}>
+        <thead className="">
+          <tr className="">
+            {columns.map((item, index) => {
+              if (
+                item.visibility ||
+                item.title === "Date" ||
+                item.title === "App"
+              )
+                return (
+                  <td className="text-left max-w-fit text-gray-500" key={index}>
+                    <FilterAltIcon />
+                  </td>
+                );
+              else return "";
+            })}
+          </tr>
+          <tr className="text-left tr-border">
+            {columns.map((item) => {
+              if (
+                item.visibility ||
+                item.title === "Date" ||
+                item.title === "App"
+              )
+                return (
+                  <th key={item.id} className="text-gray-600 mb-4">
+                    {item.title}
+                  </th>
+                );
+              else return "";
+            })}
+          </tr>
+        </thead>
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : (
           <tbody>
             {data.map((item, index) => {
-              const keys = Object.keys(item);
-              console.log("ITEM", Object.keys(item));
               function formatDate(date) {
                 const monthNames = [
                   "January",
@@ -101,22 +122,34 @@ const Container = () => {
                   .app_name;
 
               return (
-                <tr key={index} className="text-left">
+                <tr key={index} className="text-left tr-border">
                   <td>{formatDate(item.date)}</td>
                   <td>{appName}</td>
-                  <td>{item.requests}</td>
-                  <td>{item.responses}</td>
-                  <td>{item.impressions}</td>
-                  <td>{item.clicks}</td>
-                  <td>${String(item.revenue).substring(0, 5)}</td>
-                  <td>{String(fillRate).substring(0, 5)}%</td>
-                  <td>{String(ctr).substring(0, 5)}%</td>
+                  {activeColumns.includes("Ad Requests") && (
+                    <td>{item.requests.toLocaleString("en-US")}</td>
+                  )}
+                  {activeColumns.includes("Ad Response") && (
+                    <td>{item.responses.toLocaleString("en-US")}</td>
+                  )}
+                  {activeColumns.includes("Impression") && (
+                    <td>{item.impressions.toLocaleString("en-US")}</td>
+                  )}
+                  {activeColumns.includes("Clicks") && (
+                    <td>{item.clicks.toLocaleString("en-US")}</td>
+                  )}
+                  {activeColumns.includes("Revenue") && (
+                    <td>${item.revenue.toFixed(2)}</td>
+                  )}
+                  {activeColumns.includes("Fill Rate") && (
+                    <td>{fillRate.toFixed(2)}%</td>
+                  )}
+                  {activeColumns.includes("CTR") && <td>{ctr.toFixed(2)}%</td>}
                 </tr>
               );
             })}
           </tbody>
-        </table>
-      )}
+        )}
+      </table>
     </div>
   );
 };

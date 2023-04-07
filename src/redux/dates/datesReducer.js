@@ -1,8 +1,8 @@
 import { ACTIONS } from "./datesTypes";
 
 const initialState = {
-  startDate: new window.Date("07-01-2021"),
-  endDate: new window.Date("07-31-2021"),
+  startDate: new window.Date("06-01-2021"),
+  endDate: new window.Date("06-30-2021"),
 };
 
 const datesReducer = (state = initialState, action) => {

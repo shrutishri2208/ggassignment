@@ -5,6 +5,7 @@ const initialState = {
     {
       id: 1,
       title: "Date",
+      accessor: "date",
       visibility: true,
     },
     {
