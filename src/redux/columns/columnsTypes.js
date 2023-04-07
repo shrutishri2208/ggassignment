@@ -1,3 +1,4 @@
 export const ACTIONS = {
   TOGGLE_STATE: "TOGGLE_STATE",
+  SET_COLUMNS: "SET_COLUMNS",
 };

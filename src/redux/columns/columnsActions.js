@@ -6,3 +6,10 @@ export const toggleState = (title) => {
     payload: title,
   };
 };
+
+export const setColumns = (columns) => {
+  return {
+    type: ACTIONS.SET_COLUMNS,
+    payload: columns,
+  };
+};

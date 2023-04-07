@@ -60,6 +60,11 @@ const columnsReducer = (state = initialState, action) => {
           : item
       );
       return { ...state, columns: newState };
+
+    case ACTIONS.SET_COLUMNS:
+      return {
+        columns: action.payload,
+      };
     default:
       return state;
   }
