@@ -8,6 +8,9 @@ const Container = () => {
   const endDate = useSelector((state) => state.dates.endDate);
 
   const allApps = useSelector((state) => state.allApps.allApps);
+  const appLoading = useSelector((state) => state.allApps.loading);
+
+  const columns = useSelector((state) => state.columns.columns);
 
   const dispatch = useDispatch();
 
@@ -56,19 +59,16 @@ const Container = () => {
               </th>
             </tr>
             <tr className="text-left">
-              <th className="">Date</th>
-              <th>App</th>
-              <th>Requests</th>
-              <th>Responses</th>
-              <th>Impressions</th>
-              <th>Clicks</th>
-              <th>Revenue</th>
-              <th>Fill rate</th>
-              <th>CTR</th>
+              {columns.map((item) => {
+                if (item.visibility) return <th key={item.id}>{item.title}</th>;
+                else return "";
+              })}
             </tr>
           </thead>
           <tbody>
             {data.map((item, index) => {
+              const keys = Object.keys(item);
+              console.log("ITEM", Object.keys(item));
               function formatDate(date) {
                 const monthNames = [
                   "January",
@@ -93,15 +93,16 @@ const Container = () => {
                 ].join(" ");
               }
 
-              var date = formatDate(item.date);
               const fillRate = (item.requests / item.responses) * 100;
               const ctr = (item.clicks / item.impressions) * 100;
-              const appName = allApps.data.filter(
-                (app) => app.app_id === item.app_id
-              )[0].app_name;
+              const appName =
+                !appLoading &&
+                allApps.data.filter((app) => app.app_id === item.app_id)[0]
+                  .app_name;
+
               return (
                 <tr key={index} className="text-left">
-                  <td>{date}</td>
+                  <td>{formatDate(item.date)}</td>
                   <td>{appName}</td>
                   <td>{item.requests}</td>
                   <td>{item.responses}</td>

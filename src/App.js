@@ -13,7 +13,7 @@ function App() {
         <h1 className="text-xl font-semibold"> Analytics</h1>
         <Header isSettings={isSettings} setIsSettings={setIsSettings} />
         {isSettings && <Settings />}
-        {/* <Container /> */}
+        <Container />
       </div>
     </div>
   );

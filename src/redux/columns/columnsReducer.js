@@ -8,12 +8,12 @@ const initialState = {
       visibility: true,
     },
     {
-      id: 3,
+      id: 2,
       title: "App",
       visibility: true,
     },
     {
-      id: 2,
+      id: 3,
       title: "Ad Requests",
       visibility: true,
     },
@@ -25,6 +25,26 @@ const initialState = {
     {
       id: 5,
       title: "Impression",
+      visibility: true,
+    },
+    {
+      id: 6,
+      title: "Clicks",
+      visibility: true,
+    },
+    {
+      id: 7,
+      title: "Revenue",
+      visibility: true,
+    },
+    {
+      id: 8,
+      title: "Fill Rate",
+      visibility: true,
+    },
+    {
+      id: 9,
+      title: "CTR",
       visibility: true,
     },
   ],
