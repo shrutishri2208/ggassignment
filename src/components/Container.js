@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchApps } from "../redux/allApps/allAppsActions";
 
-const Container = ({ startDate, endDate }) => {
+const Container = () => {
+  const startDate = useSelector((state) => state.dates.startDate);
+  const endDate = useSelector((state) => state.dates.endDate);
+
+  const allApps = useSelector((state) => state.allApps.allApps);
+
+  const dispatch = useDispatch();
+
   const getDate = (date) => {
     return [
       date.getFullYear(),
@@ -9,56 +18,33 @@ const Container = ({ startDate, endDate }) => {
       date.getDate() < 9 ? "0" + date.getDate() : date.getDate(),
     ].join("-");
   };
-  const sDate = getDate(startDate);
-  const eDate = getDate(endDate);
+
+  const URL =
+    "http://go-dev.greedygame.com/v3/dummy/report?startDate=" +
+    getDate(startDate) +
+    "&endDate=" +
+    getDate(endDate);
   const [data, setData] = useState([]);
-  const [allApps, setAllApps] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = () => {
-    fetch(
-      "http://go-dev.greedygame.com/v3/dummy/report?startDate=" +
-        sDate +
-        "&endDate=" +
-        eDate
-    )
+    fetch(URL)
       .then((response) => response.json())
       .then((data) => {
         setLoading(false);
         setData(data.data);
       });
   };
-  const fetchApps = async () => {
-    const response = await fetch("http://go-dev.greedygame.com/v3/dummy/apps");
-    const apps = await response.json();
-    setAllApps(apps);
-  };
-  //   const fetchApps = () => {
-  //     fetch("http://go-dev.greedygame.com/v3/dummy/apps")
-  //       .then((response) => response.json())
-  //       .then((apps) => {
-  //         setLoading(false);
-  //         setAllApps(apps);
-  //       });
-  //   };
   useEffect(() => {
     fetchData();
-    fetchApps();
-  }, []);
-  console.log(allApps);
+  }, [startDate, endDate]);
 
-  const getApps = () => {
-    fetchApps();
-    let dictionary = allApps
-      ? Object.fromEntries(
-          allApps.data.map((item) => [item.app_id, item.app_name])
-        )
-      : {};
-    console.log(dictionary);
-  };
+  useEffect(() => {
+    dispatch(fetchApps());
+  }, []);
 
   return (
-    <div>
+    <div className="" style={{ minHeight: window.innerHeight }}>
       {loading ? (
         <h1>Loading...</h1>
       ) : (
@@ -110,10 +96,13 @@ const Container = ({ startDate, endDate }) => {
               var date = formatDate(item.date);
               const fillRate = (item.requests / item.responses) * 100;
               const ctr = (item.clicks / item.impressions) * 100;
+              const appName = allApps.data.filter(
+                (app) => app.app_id === item.app_id
+              )[0].app_name;
               return (
                 <tr key={index} className="text-left">
                   <td>{date}</td>
-                  <td>{item.app_id}</td>
+                  <td>{appName}</td>
                   <td>{item.requests}</td>
                   <td>{item.responses}</td>
                   <td>{item.impressions}</td>
