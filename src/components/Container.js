@@ -103,7 +103,10 @@ const Container = () => {
   console.log("COLUMNS", columns);
 
   let activeColumns = [];
-  activeColumns = columns.filter((item) => item.visibility === true);
+  activeColumns = columns.filter(
+    (item) =>
+      item.visibility === true || item.title === "Date" || item.title === "App"
+  );
 
   console.log("ACTIVE COLUMNS", activeColumns);
   let columnsAccessor = [];
