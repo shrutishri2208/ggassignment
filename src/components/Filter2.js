@@ -96,7 +96,7 @@ const Filter2 = ({ item }) => {
               <button
                 onClick={() => {
                   dispatch(setSearchValue1(10000000));
-                  dispatch(setSearchValue2(101));
+                  dispatch(setSearchValue2(1000));
                   dispatch(setSearchTerm(""));
                   dispatch(setFilterName(null));
                 }}

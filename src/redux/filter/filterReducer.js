@@ -4,7 +4,7 @@ const initialState = {
   filterName: null,
   searchTerm: "",
   searchValue1: 10000000,
-  searchValue2: 101,
+  searchValue2: 1000,
 };
 
 const filterReducer = (state = initialState, action) => {

@@ -68,6 +68,9 @@ const Container = () => {
   }, []);
 
   let dataToShow = data;
+  console.log("FILTERNAME", filterName);
+  console.log("SEARCHVALUE1", searchValue1);
+  console.log("SEARCHVALUE2", searchValue2);
 
   if (filterName === null) dataToShow = data;
   else if (filterName === "app_id")
@@ -90,7 +93,10 @@ const Container = () => {
     );
   else if (filterName === "revenue")
     dataToShow = dataToShow.filter(
-      (item) => item.app_id.includes(searchTerm) && item.revenue <= searchValue2
+      (item) =>
+        item.app_id.includes(searchTerm) &&
+        item.revenue <= searchValue2 &&
+        item[filterName] <= searchValue1
     );
   else
     dataToShow = dataToShow.filter(
