@@ -45,7 +45,6 @@ const Filter2 = ({ item }) => {
   let access = item.accessor;
 
   let valuesArray = allData.map((data) => data[access]);
-  console.log(Math.max(...valuesArray).toFixed(2));
 
   let minValue = null;
   let maxValue = null;
