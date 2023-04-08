@@ -1,8 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleFilter } from "../redux/columns/columnsActions";
-import { setSearchValue } from "../redux/filter/filterActions";
-import { setFilterName } from "../redux/filter/filterActions";
+import {
+  setSearchValue1,
+  setSearchValue2,
+  setFilterName,
+  setSearchTerm,
+} from "../redux/filter/filterActions";
 
 import { Slider } from "@mui/material";
 
@@ -10,18 +14,18 @@ const Filter2 = ({ item }) => {
   // {id: 4, title: 'Ad Response', accessor: 'responses', visibility: true, isFilter: true}
   const allData = useSelector((state) => state.data.allData);
   const filterName = useSelector((state) => state.filter.filterName);
+  const searchValue1 = useSelector((state) => state.filter.searchValue1);
+  const searchValue2 = useSelector((state) => state.filter.searchValue2);
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(0);
 
-  const handleSliderChange = () => {
-    dispatch(setSearchValue(value));
+  const handleClick = () => {
+    if (item.accessor === "revenue") dispatch(setSearchValue2(value));
+    else dispatch(setSearchValue1(value));
+
     dispatch(toggleFilter(item.title));
   };
-
-  useEffect(() => {
-    dispatch(setFilterName(item.accessor));
-  }, []);
 
   const divRef = useRef(null);
 
@@ -38,12 +42,10 @@ const Filter2 = ({ item }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [divRef]);
-  console.log(item);
   //   const minValue = 0;
   //   const maxValue = 100;
-  console.log("FILTERNAME", filterName);
   let valuesArray = allData.map((data) => data[filterName]);
-  console.log("VALUESARRAY", Math.max(...valuesArray));
+  //   console.log("VALUESARRAY", Math.max(...valuesArray));
 
   let minValue = null;
   let maxValue = null;
@@ -88,10 +90,19 @@ const Filter2 = ({ item }) => {
               <p className="text-sm">{maxValue}</p>
             </div>
             <div className="flex justify-between items-center mt-2">
-              <button>Reset</button>
+              <button
+                onClick={() => {
+                  dispatch(setSearchValue1(10000000));
+                  dispatch(setSearchValue2(101));
+                  dispatch(setSearchTerm(""));
+                  dispatch(setFilterName(null));
+                }}
+              >
+                Reset
+              </button>
               <button
                 className="bg-blue-700 my-2 text-white px-4 rounded-md"
-                onClick={handleSliderChange}
+                onClick={handleClick}
               >
                 Apply
               </button>

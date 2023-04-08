@@ -14,7 +14,8 @@ const Container = () => {
   const appLoading = useSelector((state) => state.allApps.loading);
 
   const searchTerm = useSelector((state) => state.filter.searchTerm);
-  const searchValue = useSelector((state) => state.filter.searchValue);
+  const searchValue1 = useSelector((state) => state.filter.searchValue1);
+  const searchValue2 = useSelector((state) => state.filter.searchValue2);
 
   const filterName = useSelector((state) => state.filter.filterName);
 
@@ -67,12 +68,56 @@ const Container = () => {
   }, []);
 
   let dataToShow = data;
+  // if (filterName !== null) {
+  //   dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
+
+  //   dataToShow = dataToShow.filter((item) => item[filterName] <= searchValue);
+  // }
+
+  // if (filterName === null) dataToShow = data;
+  // else dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
+
+  // if (filterName === null) dataToShow = data;
+  // else if (filterName === "app")
+  //   dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
+  // else if (filterName === "fillRate" || filterName === "CTR") dataToShow = data;
+  // else dataToShow = data.filter((item) => item[filterName] <= searchValue);
+
+  console.log("FILTERNAME", filterName);
+  console.log("SEARCH TERM", searchTerm);
+  console.log("SEARCH VALUE1", searchValue1);
+  console.log("SEARCH VALUE2", searchValue2);
 
   if (filterName === null) dataToShow = data;
-  else
-    dataToShow = data.filter(
+  else if (filterName === "app_id")
+    dataToShow = dataToShow.filter(
+      (item) => item.app_id.includes(searchTerm) && item.revenue <= searchValue2
+    );
+  else if (filterName === "CTR")
+    dataToShow = dataToShow.filter(
       (item) =>
-        item.app_id.includes(searchTerm) && item[filterName] <= searchValue
+        item.app_id.includes(searchTerm) &&
+        (item.clicks / item.impressions) * 100 <= searchValue2 &&
+        item.revenue <= searchValue2
+    );
+  else if (filterName === "fillRate")
+    dataToShow = dataToShow.filter(
+      (item) =>
+        item.app_id.includes(searchTerm) &&
+        (item.requests / item.responses) * 100 <= searchValue2 &&
+        item.revenue <= searchValue2
+    );
+  // else if (filterName === "revenue")
+  //   dataToShow = dataToShow.filter(
+  //     (item) =>
+  //       item.app_id.includes(searchTerm) && [item.revenue] <= searchValue2
+  //   );
+  else
+    dataToShow = dataToShow.filter(
+      (item) =>
+        item.app_id.includes(searchTerm) &&
+        item[filterName] <= searchValue1 &&
+        item.revenue <= searchValue2
     );
 
   return (
@@ -80,59 +125,54 @@ const Container = () => {
       <table className="w-full" style={{ lineHeight: 2 }}>
         <thead className="">
           <tr className="">
-            {dataToShow.length !== 0 &&
-              columns.map((item, index) => {
-                if (
-                  item.visibility ||
-                  item.title === "Date" ||
-                  item.title === "App"
-                )
-                  return (
-                    <td
-                      className="text-left max-w-fit text-gray-500"
-                      key={index}
-                    >
-                      {item.title !== "Date" && (
-                        <button
-                          onClick={() => {
-                            dispatch(toggleFilter(item.title));
-                          }}
-                          className="relative"
-                        >
-                          <FilterAltIcon />
-                        </button>
-                      )}
+            {columns.map((item, index) => {
+              if (
+                item.visibility ||
+                item.title === "Date" ||
+                item.title === "App"
+              )
+                return (
+                  <td className="text-left max-w-fit text-gray-500" key={index}>
+                    {item.title !== "Date" && (
+                      <button
+                        onClick={() => {
+                          dispatch(toggleFilter(item.title));
+                        }}
+                        className="relative"
+                      >
+                        <FilterAltIcon />
+                      </button>
+                    )}
 
-                      {item.isFilter && item.title !== "Date" && (
-                        <Filter item={item} />
-                      )}
-                    </td>
-                  );
-                else return "";
-              })}
+                    {item.isFilter && item.title !== "Date" && (
+                      <Filter item={item} />
+                    )}
+                  </td>
+                );
+              else return "";
+            })}
           </tr>
           <tr className="text-left tr-border">
-            {dataToShow.length !== 0 &&
-              columns.map((item) => {
-                if (
-                  item.visibility ||
-                  item.title === "Date" ||
-                  item.title === "App"
-                )
-                  return (
-                    <th key={item.id} className="text-gray-600 mb-4">
-                      {item.title}
-                    </th>
-                  );
-                else return "";
-              })}
+            {columns.map((item) => {
+              if (
+                item.visibility ||
+                item.title === "Date" ||
+                item.title === "App"
+              )
+                return (
+                  <th key={item.id} className="text-gray-600 mb-4">
+                    {item.title}
+                  </th>
+                );
+              else return "";
+            })}
           </tr>
         </thead>
         {loading ? (
           <p>Loading...</p>
         ) : (
           <tbody>
-            {/* {dataToShow.map((item, index) => {
+            {dataToShow.map((item, index) => {
               function formatDate(date) {
                 const monthNames = [
                   "January",
@@ -204,7 +244,7 @@ const Container = () => {
                   })}
                 </tr>
               );
-            })} */}
+            })}
           </tbody>
         )}
       </table>

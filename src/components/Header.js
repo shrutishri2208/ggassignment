@@ -4,7 +4,10 @@ import TuneIcon from "@mui/icons-material/Tune";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { setFilterName, setSearchTerm } from "../redux/filter/filterActions";
-import { setSearchValue } from "../redux/filter/filterActions";
+import {
+  setSearchValue1,
+  setSearchValue2,
+} from "../redux/filter/filterActions";
 
 const Header = ({ isSettings, setIsSettings }) => {
   const dispatch = useDispatch();
@@ -14,7 +17,8 @@ const Header = ({ isSettings, setIsSettings }) => {
       <div>
         <button
           onClick={() => {
-            dispatch(setSearchValue(10000000));
+            dispatch(setSearchValue1(10000000));
+            dispatch(setSearchValue2(101));
             dispatch(setSearchTerm(""));
             dispatch(setFilterName(null));
           }}

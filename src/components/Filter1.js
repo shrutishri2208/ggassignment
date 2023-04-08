@@ -20,9 +20,6 @@ const Filter1 = ({ item }) => {
     dispatch(setSearchTerm(searchId));
     dispatch(toggleFilter(item.title));
   };
-  useEffect(() => {
-    dispatch(setFilterName(item.accessor));
-  }, []);
 
   const divRef = useRef(null);
 

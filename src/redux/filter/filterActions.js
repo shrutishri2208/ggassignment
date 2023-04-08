@@ -7,9 +7,15 @@ export const setSearchTerm = (search) => {
   };
 };
 
-export const setSearchValue = (search) => {
+export const setSearchValue1 = (search) => {
   return {
-    type: ACTIONS.SET_SEARCH_VALUE,
+    type: ACTIONS.SET_SEARCH_VALUE1,
+    payload: search,
+  };
+};
+export const setSearchValue2 = (search) => {
+  return {
+    type: ACTIONS.SET_SEARCH_VALUE2,
     payload: search,
   };
 };

@@ -3,7 +3,8 @@ import { ACTIONS } from "./filterTypes";
 const initialState = {
   filterName: null,
   searchTerm: "",
-  searchValue: 10000000,
+  searchValue1: 10000000,
+  searchValue2: 101,
 };
 
 const filterReducer = (state = initialState, action) => {
@@ -13,10 +14,15 @@ const filterReducer = (state = initialState, action) => {
         ...state,
         searchTerm: action.payload,
       };
-    case ACTIONS.SET_SEARCH_VALUE:
+    case ACTIONS.SET_SEARCH_VALUE1:
       return {
         ...state,
-        searchValue: action.payload,
+        searchValue1: action.payload,
+      };
+    case ACTIONS.SET_SEARCH_VALUE2:
+      return {
+        ...state,
+        searchValue2: action.payload,
       };
     case ACTIONS.SET_FILTER_NAME:
       return {
