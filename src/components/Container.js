@@ -12,10 +12,10 @@ const Container = () => {
 
   const columns = useSelector((state) => state.columns.columns);
 
-  // var activeColumns = [];
-  // columns.forEach((item) => item.visibility && activeColumns.push(item.title));
-
   const dispatch = useDispatch();
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getDate = (date) => {
     return [
@@ -30,8 +30,6 @@ const Container = () => {
     getDate(startDate) +
     "&endDate=" +
     getDate(endDate);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     try {
@@ -205,23 +203,54 @@ const Container = () => {
               // });
 
               return (
-                <tr>
+                <tr key={index} className="tr-border">
                   {columnsAccessor.map((key) => {
                     var display;
-                    if (key === "app_id") display = appName;
-                    else if (key === "date") display = formatDate(item.date);
-                    else if (key === "requests")
-                      display = item.requests.toLocaleString("en-US");
-                    else if (key === "responses")
-                      display = item.responses.toLocaleString("en-US");
-                    else if (key === "impressions")
-                      display = item.impressions.toLocaleString("en-US");
-                    else if (key === "clicks")
-                      display = item.clicks.toLocaleString("en-US");
-                    else if (key === "revenue")
-                      display = "$" + item.revenue.toFixed(2);
-                    else if (key === "fillRate") display = fillRate.toFixed(2);
-                    else if (key === "CTR") display = ctr.toFixed(2);
+                    switch (key) {
+                      case "app_id":
+                        display = appName;
+                        break;
+                      case "date":
+                        display = formatDate(item.date);
+                        break;
+                      case "requests":
+                        display = item.requests.toLocaleString("en-US");
+                        break;
+                      case "responses":
+                        display = item.responses.toLocaleString("en-US");
+                        break;
+                      case "impressions":
+                        display = item.impressions.toLocaleString("en-US");
+                        break;
+                      case "clicks":
+                        display = item.clicks.toLocaleString("en-US");
+                        break;
+                      case "revenue":
+                        display = "$" + item.revenue.toFixed(2);
+                        break;
+                      case "fillRate":
+                        display = fillRate.toFixed(2);
+                        break;
+                      case "CTR":
+                        display = ctr.toFixed(2);
+                        break;
+                      default:
+                        display = "NA";
+                    }
+                    // if (key === "app_id") display = appName;
+                    // else if (key === "date") display = formatDate(item.date);
+                    // else if (key === "requests")
+                    //   display = item.requests.toLocaleString("en-US");
+                    // else if (key === "responses")
+                    //   display = item.responses.toLocaleString("en-US");
+                    // else if (key === "impressions")
+                    //   display = item.impressions.toLocaleString("en-US");
+                    // else if (key === "clicks")
+                    //   display = item.clicks.toLocaleString("en-US");
+                    // else if (key === "revenue")
+                    //   display = "$" + item.revenue.toFixed(2);
+                    // else if (key === "fillRate") display = fillRate.toFixed(2);
+                    // else if (key === "CTR") display = ctr.toFixed(2);
 
                     return <td>{display}</td>;
                   })}
