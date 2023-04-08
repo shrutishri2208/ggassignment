@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleFilter } from "../redux/columns/columnsActions";
-import { setSearchTerm } from "../redux/searchTerm/searchTermActions";
+import { setSearchTerm } from "../redux/filter/filterActions";
+import { setFilterName } from "../redux/filter/filterActions";
 
 const Filter1 = ({ item }) => {
   const allApps = useSelector((state) => state.allApps.allApps.data);
@@ -19,14 +20,33 @@ const Filter1 = ({ item }) => {
     dispatch(setSearchTerm(searchId));
     dispatch(toggleFilter(item.title));
   };
+  useEffect(() => {
+    dispatch(setFilterName(item.accessor));
+  }, []);
+
+  const divRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (divRef.current && !divRef.current.contains(event.target)) {
+        dispatch(toggleFilter(item.title));
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [divRef]);
 
   return (
-    <>
+    <div>
       <div
         className=" fixed top-0 bottom-0 left-0 right-0"
         style={{ backgroundColor: "rgba(255,255,255, 0.6)", zIndex: 1 }}
       ></div>
-      <div className="relative" style={{ zIndex: 100 }}>
+      <div className="relative" style={{ zIndex: 100 }} ref={divRef}>
         <div
           className="absolute bg-white border-2 border-gray-200 rounded-md left-4 px-2 1111111 "
           style={{
@@ -77,7 +97,7 @@ const Filter1 = ({ item }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

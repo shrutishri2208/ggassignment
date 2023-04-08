@@ -4,7 +4,9 @@ import Filter2 from "./Filter2";
 
 const Filter = ({ item }) => {
   return (
-    <div>{item.title === "App" ? <Filter1 item={item} /> : <Filter2 />}</div>
+    <div>
+      {item.title === "App" ? <Filter1 item={item} /> : <Filter2 item={item} />}
+    </div>
   );
 };
 

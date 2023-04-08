@@ -5,7 +5,7 @@ import Container from "./components/Container";
 import Settings from "./components/Settings";
 
 function App() {
-  const [isSettings, setIsSettings] = useState(true);
+  const [isSettings, setIsSettings] = useState(false);
   return (
     <div className="App flex h-full">
       <div className="bg-blue-950 p-8"></div>

@@ -3,13 +3,15 @@ import { combineReducers } from "redux";
 import allAppsReducer from "./allApps/allAppsReducer";
 import datesReducer from "./dates/datesReducer";
 import columnsReducer from "./columns/columnsReducer";
-import searchTermReducer from "./searchTerm/searchTermReducer";
+import filterReducer from "./filter/filterReducer";
+import dataReducer from "./data/dataReducer";
 
 const rootReducer = combineReducers({
   allApps: allAppsReducer,
   dates: datesReducer,
   columns: columnsReducer,
-  searchTerm: searchTermReducer,
+  filter: filterReducer,
+  data: dataReducer,
 });
 
 export default rootReducer;

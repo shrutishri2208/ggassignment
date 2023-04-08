@@ -3,6 +3,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchApps } from "../redux/allApps/allAppsActions";
 import { toggleFilter } from "../redux/columns/columnsActions";
+import { setAllData } from "../redux/data/dataActions";
 import Filter from "./Filter";
 
 const Container = () => {
@@ -12,7 +13,10 @@ const Container = () => {
   const allApps = useSelector((state) => state.allApps.allApps);
   const appLoading = useSelector((state) => state.allApps.loading);
 
-  const searchTerm = useSelector((state) => state.searchTerm.searchTerm);
+  const searchTerm = useSelector((state) => state.filter.searchTerm);
+  const searchValue = useSelector((state) => state.filter.searchValue);
+
+  const filterName = useSelector((state) => state.filter.filterName);
 
   const columns = useSelector((state) => state.columns.columns);
 
@@ -51,6 +55,7 @@ const Container = () => {
         .then((data) => {
           setLoading(false);
           setData(data.data);
+          dispatch(setAllData(data.data));
         });
     } catch (error) {
       console.log(error);
@@ -61,54 +66,73 @@ const Container = () => {
     dispatch(fetchApps());
   }, []);
 
-  let dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
+  let dataToShow = data;
+
+  if (filterName === null) dataToShow = data;
+  else
+    dataToShow = data.filter(
+      (item) =>
+        item.app_id.includes(searchTerm) && item[filterName] <= searchValue
+    );
 
   return (
     <div className="p-4 mt-4" style={{ minHeight: window.innerHeight }}>
       <table className="w-full" style={{ lineHeight: 2 }}>
         <thead className="">
           <tr className="">
-            {columns.map((item, index) => {
-              if (
-                item.visibility ||
-                item.title === "Date" ||
-                item.title === "App"
-              )
-                return (
-                  <td className="text-left max-w-fit text-gray-500" key={index}>
-                    <button
-                      onClick={() => dispatch(toggleFilter(item.title))}
-                      className="relative"
+            {dataToShow.length !== 0 &&
+              columns.map((item, index) => {
+                if (
+                  item.visibility ||
+                  item.title === "Date" ||
+                  item.title === "App"
+                )
+                  return (
+                    <td
+                      className="text-left max-w-fit text-gray-500"
+                      key={index}
                     >
-                      <FilterAltIcon />
-                    </button>
-                    {item.isFilter && <Filter item={item} />}
-                  </td>
-                );
-              else return "";
-            })}
+                      {item.title !== "Date" && (
+                        <button
+                          onClick={() => {
+                            dispatch(toggleFilter(item.title));
+                          }}
+                          className="relative"
+                        >
+                          <FilterAltIcon />
+                        </button>
+                      )}
+
+                      {item.isFilter && item.title !== "Date" && (
+                        <Filter item={item} />
+                      )}
+                    </td>
+                  );
+                else return "";
+              })}
           </tr>
           <tr className="text-left tr-border">
-            {columns.map((item) => {
-              if (
-                item.visibility ||
-                item.title === "Date" ||
-                item.title === "App"
-              )
-                return (
-                  <th key={item.id} className="text-gray-600 mb-4">
-                    {item.title}
-                  </th>
-                );
-              else return "";
-            })}
+            {dataToShow.length !== 0 &&
+              columns.map((item) => {
+                if (
+                  item.visibility ||
+                  item.title === "Date" ||
+                  item.title === "App"
+                )
+                  return (
+                    <th key={item.id} className="text-gray-600 mb-4">
+                      {item.title}
+                    </th>
+                  );
+                else return "";
+              })}
           </tr>
         </thead>
         {loading ? (
           <p>Loading...</p>
         ) : (
           <tbody>
-            {dataToShow.map((item, index) => {
+            {/* {dataToShow.map((item, index) => {
               function formatDate(date) {
                 const monthNames = [
                   "January",
@@ -180,7 +204,7 @@ const Container = () => {
                   })}
                 </tr>
               );
-            })}
+            })} */}
           </tbody>
         )}
       </table>
