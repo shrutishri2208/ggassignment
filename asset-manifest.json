@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/ggassignment/static/css/main.7d523480.css",
+    "main.js": "/ggassignment/static/js/main.3845e5dd.js",
+    "index.html": "/ggassignment/index.html",
+    "main.7d523480.css.map": "/ggassignment/static/css/main.7d523480.css.map",
+    "main.3845e5dd.js.map": "/ggassignment/static/js/main.3845e5dd.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7d523480.css",
+    "static/js/main.3845e5dd.js"
+  ]
+}
