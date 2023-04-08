@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchApps } from "../redux/allApps/allAppsActions";
+import { toggleFilter } from "../redux/columns/columnsActions";
+import Filter from "./Filter";
 
 const Container = () => {
   const startDate = useSelector((state) => state.dates.startDate);
@@ -9,6 +11,8 @@ const Container = () => {
 
   const allApps = useSelector((state) => state.allApps.allApps);
   const appLoading = useSelector((state) => state.allApps.loading);
+
+  const searchTerm = useSelector((state) => state.searchTerm.searchTerm);
 
   const columns = useSelector((state) => state.columns.columns);
 
@@ -37,7 +41,6 @@ const Container = () => {
       item.visibility === true || item.title === "Date" || item.title === "App"
   );
 
-  console.log("ACTIVE COLUMNS", activeColumns);
   let columnsAccessor = [];
   columnsAccessor = activeColumns.map((item) => item.accessor);
 
@@ -58,6 +61,8 @@ const Container = () => {
     dispatch(fetchApps());
   }, []);
 
+  let dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
+
   return (
     <div className="p-4 mt-4" style={{ minHeight: window.innerHeight }}>
       <table className="w-full" style={{ lineHeight: 2 }}>
@@ -71,7 +76,13 @@ const Container = () => {
               )
                 return (
                   <td className="text-left max-w-fit text-gray-500" key={index}>
-                    <FilterAltIcon />
+                    <button
+                      onClick={() => dispatch(toggleFilter(item.title))}
+                      className="relative"
+                    >
+                      <FilterAltIcon />
+                    </button>
+                    {item.isFilter && <Filter item={item} />}
                   </td>
                 );
               else return "";
@@ -94,10 +105,10 @@ const Container = () => {
           </tr>
         </thead>
         {loading ? (
-          <h1>Loading...</h1>
+          <p>Loading...</p>
         ) : (
           <tbody>
-            {data.map((item, index) => {
+            {dataToShow.map((item, index) => {
               function formatDate(date) {
                 const monthNames = [
                   "January",
