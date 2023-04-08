@@ -2,10 +2,13 @@ import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleFilter } from "../redux/columns/columnsActions";
 import {
-  setSearchValue1,
-  setSearchValue2,
+  setapp,
+  setrequests,
+  setresponses,
+  setimpressions,
+  setclicks,
+  setrevenue,
   setFilterName,
-  setSearchTerm,
 } from "../redux/filter/filterActions";
 
 import { Slider } from "@mui/material";
@@ -13,17 +16,54 @@ import { Slider } from "@mui/material";
 const Filter2 = ({ item }) => {
   const allData = useSelector((state) => state.data.allData);
   const filterName = useSelector((state) => state.filter.filterName);
-  const searchValue1 = useSelector((state) => state.filter.searchValue1);
-  const searchValue2 = useSelector((state) => state.filter.searchValue2);
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(0);
 
   const handleClick = () => {
-    if (item.accessor === "revenue") dispatch(setSearchValue2(value));
-    else dispatch(setSearchValue1(value));
+    switch (item.accessor) {
+      case "requests":
+        dispatch(setrequests(value));
+        break;
+      case "responses":
+        dispatch(setresponses(value));
+        break;
+      case "impressions":
+        dispatch(setimpressions(value));
+        break;
+      case "clicks":
+        dispatch(setclicks(value));
+        break;
+      case "revenue":
+        dispatch(setrevenue(value));
+        break;
+      default:
+        break;
+    }
     dispatch(setFilterName(item.accessor));
     dispatch(toggleFilter(item.title));
+  };
+
+  const resetValues = () => {
+    switch (item.accessor) {
+      case "requests":
+        dispatch(setrequests(10000000));
+        break;
+      case "responses":
+        dispatch(setresponses(10000000));
+        break;
+      case "impressions":
+        dispatch(setimpressions(10000000));
+        break;
+      case "clicks":
+        dispatch(setclicks(10000000));
+        break;
+      case "revenue":
+        dispatch(setrevenue(10000000));
+        break;
+      default:
+        break;
+    }
   };
 
   const divRef = useRef(null);
@@ -93,16 +133,7 @@ const Filter2 = ({ item }) => {
               <p className="text-sm">{maxValue}</p>
             </div>
             <div className="flex justify-between items-center mt-2">
-              <button
-                onClick={() => {
-                  dispatch(setSearchValue1(10000000));
-                  dispatch(setSearchValue2(1000));
-                  dispatch(setSearchTerm(""));
-                  dispatch(setFilterName(null));
-                }}
-              >
-                Reset
-              </button>
+              <button onClick={resetValues}>Reset</button>
               <button
                 className="bg-blue-700 my-2 text-white px-4 rounded-md"
                 onClick={handleClick}

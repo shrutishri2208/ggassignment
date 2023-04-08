@@ -13,11 +13,13 @@ const Container = () => {
   const allApps = useSelector((state) => state.allApps.allApps);
   const appLoading = useSelector((state) => state.allApps.loading);
 
-  const searchTerm = useSelector((state) => state.filter.searchTerm);
-  const searchValue1 = useSelector((state) => state.filter.searchValue1);
-  const searchValue2 = useSelector((state) => state.filter.searchValue2);
-
   const filterName = useSelector((state) => state.filter.filterName);
+  const app = useSelector((state) => state.filter.app);
+  const requests = useSelector((state) => state.filter.requests);
+  const responses = useSelector((state) => state.filter.responses);
+  const impressions = useSelector((state) => state.filter.impressions);
+  const clicks = useSelector((state) => state.filter.clicks);
+  const revenue = useSelector((state) => state.filter.revenue);
 
   const columns = useSelector((state) => state.columns.columns);
 
@@ -68,43 +70,16 @@ const Container = () => {
   }, []);
 
   let dataToShow = data;
-  console.log("FILTERNAME", filterName);
-  console.log("SEARCHVALUE1", searchValue1);
-  console.log("SEARCHVALUE2", searchValue2);
 
-  if (filterName === null) dataToShow = data;
-  else if (filterName === "app_id")
-    dataToShow = dataToShow.filter(
-      (item) => item.app_id.includes(searchTerm) && item.revenue <= searchValue2
-    );
-  else if (filterName === "CTR")
-    dataToShow = dataToShow.filter(
-      (item) =>
-        item.app_id.includes(searchTerm) &&
-        (item.clicks / item.impressions) * 100 <= searchValue2 &&
-        item.revenue <= searchValue2
-    );
-  else if (filterName === "fillRate")
-    dataToShow = dataToShow.filter(
-      (item) =>
-        item.app_id.includes(searchTerm) &&
-        (item.requests / item.responses) * 100 <= searchValue2 &&
-        item.revenue <= searchValue2
-    );
-  else if (filterName === "revenue")
-    dataToShow = dataToShow.filter(
-      (item) =>
-        item.app_id.includes(searchTerm) &&
-        item.revenue <= searchValue2 &&
-        item[filterName] <= searchValue1
-    );
-  else
-    dataToShow = dataToShow.filter(
-      (item) =>
-        item.app_id.includes(searchTerm) &&
-        item[filterName] <= searchValue1 &&
-        item.revenue <= searchValue2
-    );
+  dataToShow = data.filter(
+    (item) =>
+      item.app_id.includes(app) &&
+      item.requests <= requests &&
+      item.responses <= responses &&
+      item.impressions <= impressions &&
+      item.clicks <= clicks &&
+      item.revenue <= revenue
+  );
 
   return (
     <div className="p-4 mt-4" style={{ minHeight: window.innerHeight }}>

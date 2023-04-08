@@ -3,10 +3,14 @@ import Date from "./Date";
 import TuneIcon from "@mui/icons-material/Tune";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
-import { setFilterName, setSearchTerm } from "../redux/filter/filterActions";
 import {
-  setSearchValue1,
-  setSearchValue2,
+  setFilterName,
+  setapp,
+  setrequests,
+  setresponses,
+  setimpressions,
+  setclicks,
+  setrevenue,
 } from "../redux/filter/filterActions";
 
 const Header = ({ isSettings, setIsSettings }) => {
@@ -17,10 +21,13 @@ const Header = ({ isSettings, setIsSettings }) => {
       <div>
         <button
           onClick={() => {
-            dispatch(setSearchValue1(10000000));
-            dispatch(setSearchValue2(1000));
-            dispatch(setSearchTerm(""));
             dispatch(setFilterName(null));
+            dispatch(setapp(""));
+            dispatch(setrequests(10000000));
+            dispatch(setresponses(10000000));
+            dispatch(setimpressions(10000000));
+            dispatch(setclicks(10000000));
+            dispatch(setrevenue(10000000));
           }}
           className="border-gray-200 rounded-md border-2 px-4 font-semibold text-gray-700"
         >

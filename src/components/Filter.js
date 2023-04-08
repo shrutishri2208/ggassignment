@@ -6,9 +6,7 @@ import { setFilterName } from "../redux/filter/filterActions";
 
 const Filter = ({ item }) => {
   useEffect(() => {
-    if (item.accessor === "fillRate" || item.accessor === "CTR") {
-      dispatch(setFilterName(item.accessor));
-    }
+    dispatch(setFilterName(item.accessor));
   }, []);
   const dispatch = useDispatch();
   return (

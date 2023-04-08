@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleFilter } from "../redux/columns/columnsActions";
-import { setSearchTerm } from "../redux/filter/filterActions";
-import { setFilterName } from "../redux/filter/filterActions";
+import { setFilterName, setapp } from "../redux/filter/filterActions";
 
 const Filter1 = ({ item }) => {
   const allApps = useSelector((state) => state.allApps.allApps.data);
@@ -17,7 +16,7 @@ const Filter1 = ({ item }) => {
     const searchId = allApps.find((item) =>
       item.app_name.toLowerCase().includes(search.toLowerCase())
     ).app_id;
-    dispatch(setSearchTerm(searchId));
+    dispatch(setapp(searchId));
     dispatch(toggleFilter(item.title));
     dispatch(setFilterName(item.accessor));
   };
@@ -88,8 +87,8 @@ const Filter1 = ({ item }) => {
           <div className="flex justify-between">
             <button
               onClick={() => {
-                dispatch(setSearchTerm(""));
                 dispatch(setFilterName(null));
+                dispatch(setapp(""));
               }}
             >
               Reset
