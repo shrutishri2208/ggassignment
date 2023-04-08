@@ -6,9 +6,6 @@ import { setFilterName } from "../redux/filter/filterActions";
 
 const Filter = ({ item }) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setFilterName(item.accessor));
-  }, []);
   return (
     <div>
       {item.title === "App" ? <Filter1 item={item} /> : <Filter2 item={item} />}

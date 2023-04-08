@@ -19,6 +19,7 @@ const Filter1 = ({ item }) => {
     ).app_id;
     dispatch(setSearchTerm(searchId));
     dispatch(toggleFilter(item.title));
+    dispatch(setFilterName(item.accessor));
   };
 
   const divRef = useRef(null);

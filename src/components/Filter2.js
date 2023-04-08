@@ -22,7 +22,7 @@ const Filter2 = ({ item }) => {
   const handleClick = () => {
     if (item.accessor === "revenue") dispatch(setSearchValue2(value));
     else dispatch(setSearchValue1(value));
-
+    dispatch(setFilterName(item.accessor));
     dispatch(toggleFilter(item.title));
   };
 
@@ -41,7 +41,11 @@ const Filter2 = ({ item }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [divRef]);
-  let valuesArray = allData.map((data) => data[filterName]);
+
+  let access = item.accessor;
+
+  let valuesArray = allData.map((data) => data[access]);
+  console.log(Math.max(...valuesArray).toFixed(2));
 
   let minValue = null;
   let maxValue = null;
