@@ -11,7 +11,6 @@ import {
 import { Slider } from "@mui/material";
 
 const Filter2 = ({ item }) => {
-  // {id: 4, title: 'Ad Response', accessor: 'responses', visibility: true, isFilter: true}
   const allData = useSelector((state) => state.data.allData);
   const filterName = useSelector((state) => state.filter.filterName);
   const searchValue1 = useSelector((state) => state.filter.searchValue1);
@@ -42,10 +41,7 @@ const Filter2 = ({ item }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [divRef]);
-  //   const minValue = 0;
-  //   const maxValue = 100;
   let valuesArray = allData.map((data) => data[filterName]);
-  //   console.log("VALUESARRAY", Math.max(...valuesArray));
 
   let minValue = null;
   let maxValue = null;
@@ -69,7 +65,11 @@ const Filter2 = ({ item }) => {
       ></div>
       <div className="relative" style={{ zIndex: 100 }} ref={divRef}>
         <div
-          className="absolute bg-white border-2 border-gray-200 rounded-md left-4 px-2 1111111 "
+          className={`absolute bg-white border-2 border-gray-200 rounded-md  px-2 ${
+            item.accessor === "fillRate" || item.accessor === "CTR"
+              ? "right-20"
+              : "left-4"
+          }  `}
           style={{
             width: 300,
           }}

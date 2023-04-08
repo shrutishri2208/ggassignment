@@ -84,7 +84,16 @@ const Filter1 = ({ item }) => {
               );
             })}
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <button
+              onClick={() => {
+                dispatch(setSearchTerm(""));
+                dispatch(setFilterName(null));
+              }}
+            >
+              Reset
+            </button>
+
             <button
               className="bg-blue-700 my-2 text-white px-4 rounded-md"
               onClick={handleClick}

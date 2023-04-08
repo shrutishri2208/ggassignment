@@ -68,25 +68,6 @@ const Container = () => {
   }, []);
 
   let dataToShow = data;
-  // if (filterName !== null) {
-  //   dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
-
-  //   dataToShow = dataToShow.filter((item) => item[filterName] <= searchValue);
-  // }
-
-  // if (filterName === null) dataToShow = data;
-  // else dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
-
-  // if (filterName === null) dataToShow = data;
-  // else if (filterName === "app")
-  //   dataToShow = data.filter((item) => item.app_id.includes(searchTerm));
-  // else if (filterName === "fillRate" || filterName === "CTR") dataToShow = data;
-  // else dataToShow = data.filter((item) => item[filterName] <= searchValue);
-
-  console.log("FILTERNAME", filterName);
-  console.log("SEARCH TERM", searchTerm);
-  console.log("SEARCH VALUE1", searchValue1);
-  console.log("SEARCH VALUE2", searchValue2);
 
   if (filterName === null) dataToShow = data;
   else if (filterName === "app_id")
@@ -107,11 +88,6 @@ const Container = () => {
         (item.requests / item.responses) * 100 <= searchValue2 &&
         item.revenue <= searchValue2
     );
-  // else if (filterName === "revenue")
-  //   dataToShow = dataToShow.filter(
-  //     (item) =>
-  //       item.app_id.includes(searchTerm) && [item.revenue] <= searchValue2
-  //   );
   else
     dataToShow = dataToShow.filter(
       (item) =>
@@ -138,7 +114,6 @@ const Container = () => {
                         onClick={() => {
                           dispatch(toggleFilter(item.title));
                         }}
-                        className="relative"
                       >
                         <FilterAltIcon />
                       </button>

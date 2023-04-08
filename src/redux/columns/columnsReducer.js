@@ -56,7 +56,7 @@ const initialState = {
       title: "Fill Rate",
       accessor: "fillRate",
       visibility: true,
-      isFilter: false,
+      isFilter: true,
     },
     {
       id: 9,
