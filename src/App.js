@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "./components/Header";
 import "react-datepicker/dist/react-datepicker.css";
 import Container from "./components/Container";
@@ -10,7 +10,7 @@ function App() {
     <div className="App flex h-full">
       <div className="bg-blue-950 p-8"></div>
       <div className="m-10 w-full">
-        <h1 className="text-xl font-semibold"> Analytics</h1>
+        <h1 className="text-2xl font-semibold"> Analytics</h1>
         <Header isSettings={isSettings} setIsSettings={setIsSettings} />
         {isSettings && <Settings />}
         <Container />

@@ -1,6 +1,5 @@
 import React from "react";
 import Date from "./Date";
-import Settings from "./Settings";
 import TuneIcon from "@mui/icons-material/Tune";
 
 const Header = ({ isSettings, setIsSettings }) => {

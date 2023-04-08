@@ -6,9 +6,6 @@ import { setColumns } from "../redux/columns/columnsActions";
 const Settings = () => {
   const columns = useSelector((state) => state.columns.columns);
   const dispatch = useDispatch();
-  // columns.sort((a, b) => {
-  //   return a.id - b.id;
-  // });
 
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);

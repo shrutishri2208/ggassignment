@@ -31,6 +31,16 @@ const Container = () => {
     "&endDate=" +
     getDate(endDate);
 
+  let activeColumns = [];
+  activeColumns = columns.filter(
+    (item) =>
+      item.visibility === true || item.title === "Date" || item.title === "App"
+  );
+
+  console.log("ACTIVE COLUMNS", activeColumns);
+  let columnsAccessor = [];
+  columnsAccessor = activeColumns.map((item) => item.accessor);
+
   useEffect(() => {
     try {
       fetch(URL)
@@ -47,69 +57,6 @@ const Container = () => {
   useEffect(() => {
     dispatch(fetchApps());
   }, []);
-
-  // const trial = [
-  //   {
-  //     title: "Date",
-  //     values: ["22", "8", "5", "3"],
-  //   },
-  //   {
-  //     title: "App",
-  //     values: ["Hello", "World", "Dog", "Cat"],
-  //   },
-  //   {
-  //     title: "Clicks",
-  //     values: ["34", "35", "26", "85"],
-  //   },
-  // ];
-
-  const columnsOrder = Object.assign(
-    {},
-    ...columns.map((item) => ({ [item.accessor]: null }))
-  );
-
-  // console.log(data);
-  let date = data.map((item) => item.date);
-  let clicks = data.map((item) => item.clicks);
-
-  // let allData = [{ date: date }, { clicks: clicks }];
-  // console.log(date);
-
-  // console.log(columnsOrder);
-  // console.log(data[0].columnsAccessor[0]);
-
-  // const data2 = [];
-  // data2.push(data.map((item) => Object.assign(columnsOrder, item)));
-
-  // const data2 = Object.assign(columnsOrder, data);
-  // console.log(data2[0]);
-  // let data3 = [];
-
-  // data3.push(data2[0].map((item) => Object.values(item)));
-  // console.log(data3[0][0]);
-  // console.log(Object.values(data2[0][0]));
-  // console.log(data2[0][0]);
-
-  // console.log(data);
-  // console.log(columns);
-
-  // {
-  //   data.map((item) => {
-  //     Object.keys(item).map((key) => console.log(key));
-  //   });
-  // }
-  console.log("COLUMNS", columns);
-
-  let activeColumns = [];
-  activeColumns = columns.filter(
-    (item) =>
-      item.visibility === true || item.title === "Date" || item.title === "App"
-  );
-
-  console.log("ACTIVE COLUMNS", activeColumns);
-  let columnsAccessor = [];
-  columnsAccessor = activeColumns.map((item) => item.accessor);
-  // console.log(columnsAccessor);
 
   return (
     <div className="p-4 mt-4" style={{ minHeight: window.innerHeight }}>
@@ -150,19 +97,6 @@ const Container = () => {
           <h1>Loading...</h1>
         ) : (
           <tbody>
-            {/* {trial.map((item) => {
-              return (
-                <tr style={{ display: "table-cell" }}>
-                  <th>{item.title}</th>
-                  {item.values.map((value) => {
-                    return <td style={{ display: "grid" }}>{value}</td>;
-                  })}
-                </tr>
-              );
-            })} */}
-            <tr>
-              <th></th>
-            </tr>
             {data.map((item, index) => {
               function formatDate(date) {
                 const monthNames = [
@@ -194,13 +128,6 @@ const Container = () => {
                 !appLoading &&
                 allApps.data.filter((app) => app.app_id === item.app_id)[0]
                   .app_name;
-              // console.log(item);
-
-              // return Object.keys(item).map((key) => {
-              //   return <tr>
-
-              //   </tr>;
-              // });
 
               return (
                 <tr key={index} className="tr-border">
@@ -229,57 +156,19 @@ const Container = () => {
                         display = "$" + item.revenue.toFixed(2);
                         break;
                       case "fillRate":
-                        display = fillRate.toFixed(2);
+                        display = fillRate.toFixed(2) + "%";
                         break;
                       case "CTR":
-                        display = ctr.toFixed(2);
+                        display = ctr.toFixed(2) + "%";
                         break;
                       default:
-                        display = "NA";
+                        display = item[key];
                     }
-                    // if (key === "app_id") display = appName;
-                    // else if (key === "date") display = formatDate(item.date);
-                    // else if (key === "requests")
-                    //   display = item.requests.toLocaleString("en-US");
-                    // else if (key === "responses")
-                    //   display = item.responses.toLocaleString("en-US");
-                    // else if (key === "impressions")
-                    //   display = item.impressions.toLocaleString("en-US");
-                    // else if (key === "clicks")
-                    //   display = item.clicks.toLocaleString("en-US");
-                    // else if (key === "revenue")
-                    //   display = "$" + item.revenue.toFixed(2);
-                    // else if (key === "fillRate") display = fillRate.toFixed(2);
-                    // else if (key === "CTR") display = ctr.toFixed(2);
 
                     return <td>{display}</td>;
                   })}
                 </tr>
               );
-
-              // <tr key={index} className="text-left tr-border">
-              //   <td>{formatDate(item.date)}</td>
-              //   <td>{appName}</td>
-              //   {activeColumns.includes("Ad Requests") && (
-              //     <td>{item.requests.toLocaleString("en-US")}</td>
-              //   )}
-              //   {activeColumns.includes("Ad Response") && (
-              //     <td>{item.responses.toLocaleString("en-US")}</td>
-              //   )}
-              //   {activeColumns.includes("Impression") && (
-              //     <td>{item.impressions.toLocaleString("en-US")}</td>
-              //   )}
-              //   {activeColumns.includes("Clicks") && (
-              //     <td>{item.clicks.toLocaleString("en-US")}</td>
-              //   )}
-              //   {activeColumns.includes("Revenue") && (
-              //     <td>${item.revenue.toFixed(2)}</td>
-              //   )}
-              //   {activeColumns.includes("Fill Rate") && (
-              //     <td>{fillRate.toFixed(2)}%</td>
-              //   )}
-              //   {activeColumns.includes("CTR") && <td>{ctr.toFixed(2)}%</td>}
-              // </tr>
             })}
           </tbody>
         )}
